@@ -1,7 +1,8 @@
-package pl.gameboard.gameboarddev.model.auth;
+package pl.gameboard.gameboarddev.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

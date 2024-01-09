@@ -1,8 +1,8 @@
-package pl.gameboard.gameboarddev.repository.auth;
+package pl.gameboard.gameboarddev.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.gameboard.gameboarddev.model.auth.UserEntity;
+import pl.gameboard.gameboarddev.model.user.UserEntity;
 
 import java.util.Optional;
 

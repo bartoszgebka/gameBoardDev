@@ -1,4 +1,4 @@
-package pl.gameboard.gameboarddev.model.auth;
+package pl.gameboard.gameboarddev.model.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;
