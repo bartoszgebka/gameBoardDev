@@ -1,0 +1,43 @@
+<form
+  [formGroup]="loginForm"
+  (ngSubmit)="authentication.emit(loginForm.getRawValue())"
+  style="display: flex; flex-direction: column;"
+>
+  <mat-form-field appearance="fill">
+    <mat-label>email</mat-label>
+    <input
+      matNativeControl
+      formControlName="email"
+      type="email"
+      placeholder="email"
+    />
+    <mat-icon matPrefix>mail</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>password</mat-label>
+    <input
+      matNativeControl
+      formControlName="password"
+      type="password"
+      placeholder="password"
+    />
+    <mat-icon matPrefix>lock</mat-icon>
+  </mat-form-field>
+
+  @if (LoginStatus.ERROR === loginStatus) {
+    <mat-error>{{ error }}</mat-error>
+  }
+  @if (LoginStatus.AUTHENTICATING === loginStatus) {
+    <mat-spinner diameter="50"></mat-spinner>
+  }
+
+  <button
+    mat-raised-button
+    color="accent"
+    type="submit"
+    [disabled]="LoginStatus.AUTHENTICATING === loginStatus"
+  >
+    Login
+  </button>
+</form>

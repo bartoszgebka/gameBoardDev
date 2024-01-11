@@ -1,6 +1,7 @@
-package pl.gameboard.gameboarddev.config;
+package pl.gameboard.gameboarddev.service.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Service;
 import pl.gameboard.gameboarddev.config.jwt.JwtService;
 import pl.gameboard.gameboarddev.dto.auth.AuthenticationDTO;
 import pl.gameboard.gameboarddev.dto.auth.RegisterDTO;
+import pl.gameboard.gameboarddev.dto.user.AuthorityDTO;
+import pl.gameboard.gameboarddev.dto.user.UserDTO;
+import pl.gameboard.gameboarddev.model.user.AuthorityEntity;
 import pl.gameboard.gameboarddev.model.user.UserEntity;
 import pl.gameboard.gameboarddev.repository.UserRepository;
 
@@ -32,13 +36,32 @@ public class AuthenticationService {
         return jwtService.generateToken(user);
     }
 
-    public String authenticate(AuthenticationDTO authenticationDTO) {
+    public ResponseEntity<UserDTO> authenticate(AuthenticationDTO authenticationDTO) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authenticationDTO.getEmail(), authenticationDTO.getPassword())
         );
 
         var user = userRepository.findByEmail(authenticationDTO.getEmail()).orElseThrow();
 
-        return jwtService.generateToken(user);
+         var jwtToken = jwtService.generateToken(user);
+
+         return ResponseEntity.ok()
+                 .header("Token", jwtToken)
+                 .body(mapUserToDTO(user));
+    }
+
+    private UserDTO mapUserToDTO(UserEntity userEntity) {
+        return UserDTO.builder()
+                .id(userEntity.getId())
+                .login(userEntity.getLogin())
+                .email(userEntity.getEmail())
+                .authorities(userEntity.getAuthorities().stream().map(this::mapAuthorityToDTO).toList())
+                .build();
+    }
+
+    private AuthorityDTO mapAuthorityToDTO(AuthorityEntity authorityEntity) {
+        return AuthorityDTO.builder()
+                .name(authorityEntity.getName())
+                .build();
     }
 }

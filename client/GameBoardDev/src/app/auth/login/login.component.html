@@ -1,0 +1,5 @@
+<div class="container gradient-bg">
+  <app-login-form [loginStatus]="loginService.status()"
+                  [error]="loginService.error()"
+                  (authentication)="loginService.login$.next($event)"/>
+</div>

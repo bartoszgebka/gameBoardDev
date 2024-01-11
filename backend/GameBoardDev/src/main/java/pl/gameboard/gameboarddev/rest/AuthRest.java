@@ -1,8 +1,10 @@
 package pl.gameboard.gameboarddev.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.gameboard.gameboarddev.config.AuthenticationService;
+import pl.gameboard.gameboarddev.dto.user.UserDTO;
+import pl.gameboard.gameboarddev.service.auth.AuthenticationService;
 import pl.gameboard.gameboarddev.dto.auth.AuthenticationDTO;
 import pl.gameboard.gameboarddev.dto.auth.RegisterDTO;
 
@@ -19,7 +21,7 @@ public class AuthRest {
     }
 
     @PostMapping("/authenticate")
-    public String register(@RequestBody AuthenticationDTO authenticationDTO) {
+    public ResponseEntity<UserDTO> authenticate(@RequestBody AuthenticationDTO authenticationDTO) {
         return authenticationService.authenticate(authenticationDTO);
     }
 }

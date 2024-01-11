@@ -10,7 +10,10 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: validate
-
 server:
   servlet:
     context-path: /api
+logging:
+  level:
+    root: info
+client-url: http://clientUrl.com
