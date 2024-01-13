@@ -1,0 +1,5 @@
+<app-create-post-form
+  [status]="createPostService.status()"
+  [validationResult]="createPostService.validationResult()"
+  (createPost)="createPostService.createPost$.next($event)"
+/>

@@ -1,0 +1,37 @@
+<form
+  [formGroup]="createPostForm"
+  (ngSubmit)="handleSubmit()"
+  style="display: flex; flex-direction: column;"
+>
+  <mat-form-field appearance="fill">
+    <mat-label>Tytuł</mat-label>
+    <input
+      matNativeControl
+      formControlName="title"
+      type="text"
+      placeholder="Tytuł"
+    />
+  </mat-form-field>
+  <app-form-error fieldNameInput="title" [validationResult]="validationResult"/>
+
+  <ckeditor [editor]="Editor"
+            [config]="editorConfig"
+            formControlName="content"
+            style="margin-bottom: 1rem;"
+            class="create-post-editor"
+            />
+  <app-form-error fieldNameInput="content" [validationResult]="validationResult"/>
+
+  @if (CreatePostStatus.CREATING === status) {
+    <mat-spinner diameter="50"></mat-spinner>
+  }
+
+  <button
+    mat-raised-button
+    color="accent"
+    type="submit"
+    [disabled]="CreatePostStatus.CREATING === status"
+  >
+    Utwórz
+  </button>
+</form>

@@ -8,8 +8,12 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    canActivate: [isAuthenticatedGuard()],
+    canActivate: [isAuthenticatedGuard],
     loadComponent: () => import('./home/home.component')
+  },
+  {
+    path: 'post',
+    loadChildren: () => import('./post/post.routes').then((r) => r.POST_ROUTES)
   },
   {
     path: '',

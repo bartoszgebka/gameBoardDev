@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import pl.gameboard.gameboarddev.model.user.AuthorityEntity;
 import pl.gameboard.gameboarddev.model.user.UserEntity;
 
 import java.security.Key;
@@ -37,6 +38,8 @@ public class JwtService {
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("authorities", user.getAuthorities().stream().map(AuthorityEntity::getName).toList())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -66,6 +69,4 @@ public class JwtService {
         var keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-
 }

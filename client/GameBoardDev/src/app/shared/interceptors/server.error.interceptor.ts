@@ -8,10 +8,10 @@ export function serverErrorInterceptor(req: HttpRequest<unknown>, next: HttpHand
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 500) {
+      if (error.status === 500 || error.status === 480) {
         snackBar.open(error.error, "Zamknij");
       }
-      return throwError(() => new Error(error.error))
+      return throwError(() => error)
     })
   );
 }
