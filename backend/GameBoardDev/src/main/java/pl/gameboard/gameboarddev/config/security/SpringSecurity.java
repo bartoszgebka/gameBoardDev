@@ -1,4 +1,4 @@
-package pl.gameboard.gameboarddev.config;
+package pl.gameboard.gameboarddev.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import pl.gameboard.gameboarddev.config.jwt.JwtAuthenticationFilter;
+import pl.gameboard.gameboarddev.config.security.jwt.JwtAuthenticationFilter;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package pl.gameboard.gameboarddev.config;
+package pl.gameboard.gameboarddev.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

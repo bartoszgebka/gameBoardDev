@@ -1,11 +1,10 @@
 package pl.gameboard.gameboarddev.model.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.gameboard.gameboarddev.model.common.BasicEntity;
 
 import java.util.Set;
 
@@ -14,13 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "main_seq_gen")
-    @SequenceGenerator(name = "main_seq_gen", sequenceName = "public.main_seq", allocationSize = 1)
-    @Column(name = "id")
-    private Long id;
+public class UserEntity extends BasicEntity {
 
     @Column
     private String login;
@@ -31,8 +24,7 @@ public class UserEntity {
     @Column
     private String password;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<AuthorityEntity> authorities;
 
 }

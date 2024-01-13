@@ -1,4 +1,4 @@
-package pl.gameboard.gameboarddev.config.jwt;
+package pl.gameboard.gameboarddev.config.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

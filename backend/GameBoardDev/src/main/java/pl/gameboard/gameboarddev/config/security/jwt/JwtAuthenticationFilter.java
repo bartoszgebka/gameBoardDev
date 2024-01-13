@@ -1,4 +1,4 @@
-package pl.gameboard.gameboarddev.config.jwt;
+package pl.gameboard.gameboarddev.config.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

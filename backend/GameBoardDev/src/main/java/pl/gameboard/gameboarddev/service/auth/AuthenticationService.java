@@ -7,7 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.gameboard.gameboarddev.config.jwt.JwtService;
+import pl.gameboard.gameboarddev.config.security.jwt.JwtService;
 import pl.gameboard.gameboarddev.model.user.AuthorityEntity;
 import pl.gameboard.gameboarddev.model.user.UserEntity;
 import pl.gameboard.gameboarddev.model.user.UserRepository;
