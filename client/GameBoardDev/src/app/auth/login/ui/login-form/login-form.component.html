@@ -1,6 +1,6 @@
 <form
   [formGroup]="loginForm"
-  (ngSubmit)="authentication.emit(loginForm.getRawValue())"
+  (ngSubmit)="handleSubmit()"
   style="display: flex; flex-direction: column;"
 >
   <mat-form-field appearance="fill">

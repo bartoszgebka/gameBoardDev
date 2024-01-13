@@ -1,0 +1,66 @@
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="handleSubmit()"
+  style="display: flex; flex-direction: column;"
+>
+  <mat-form-field appearance="fill">
+    <mat-label>login</mat-label>
+    <input
+      matNativeControl
+      formControlName="login"
+      type="text"
+      placeholder="login"
+    />
+    <mat-icon matPrefix>mail</mat-icon>
+  </mat-form-field>
+  <app-form-error fieldNameInput="login" [validationResult]="validationResult"/>
+
+  <mat-form-field appearance="fill">
+    <mat-label>email</mat-label>
+    <input
+      matNativeControl
+      formControlName="email"
+      type="email"
+      placeholder="email"
+    />
+    <mat-icon matPrefix>mail</mat-icon>
+  </mat-form-field>
+  <app-form-error fieldNameInput="email" [validationResult]="validationResult"/>
+
+  <mat-form-field appearance="fill">
+    <mat-label>password</mat-label>
+    <input
+      matNativeControl
+      formControlName="password"
+      type="password"
+      placeholder="password"
+    />
+    <mat-icon matPrefix>lock</mat-icon>
+  </mat-form-field>
+  <app-form-error fieldNameInput="password" [validationResult]="validationResult"/>
+
+  <mat-form-field appearance="fill">
+    <mat-label>confirm password</mat-label>
+    <input
+      matNativeControl
+      formControlName="confirmPassword"
+      type="password"
+      placeholder="confirm password"
+    />
+    <mat-icon matPrefix>lock</mat-icon>
+  </mat-form-field>
+  <app-form-error fieldNameInput="confirmPassword" [validationResult]="validationResult"/>
+
+  @if (RegisterStatus.CREATING === registerStatus) {
+    <mat-spinner diameter="50"></mat-spinner>
+  }
+
+  <button
+    mat-raised-button
+    color="accent"
+    type="submit"
+    [disabled]="RegisterStatus.CREATING === registerStatus"
+  >
+    Register
+  </button>
+</form>

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthenticationDTO} from "../../interfaces/authentication";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -21,7 +21,8 @@ import {MatDividerModule} from "@angular/material/divider";
     MatProgressSpinnerModule,
     MatDividerModule
   ],
-  templateUrl: './login-form.component.html'
+  templateUrl: './login-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginFormComponent {
   private fb = inject(FormBuilder);
@@ -39,4 +40,10 @@ export class LoginFormComponent {
 
   @Output()
   authentication = new EventEmitter<AuthenticationDTO>();
+
+  handleSubmit() {
+    if (this.loginForm.valid) {
+      this.authentication.emit(this.loginForm.getRawValue());
+    }
+  }
 }

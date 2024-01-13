@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.gameboard.gameboarddev.model.user.AuthorityEntity;
-import pl.gameboard.gameboarddev.repository.UserRepository;
+import pl.gameboard.gameboarddev.model.user.UserRepository;
 
 import java.util.List;
 import java.util.Set;
@@ -33,6 +33,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private List<SimpleGrantedAuthority> getAuthorities(Set<AuthorityEntity> authorityEntitySet) {
-        return authorityEntitySet.stream().map(a->new SimpleGrantedAuthority(a.getName())).toList();
+        return authorityEntitySet.stream().map(a -> new SimpleGrantedAuthority(a.getName())).toList();
     }
 }

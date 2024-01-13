@@ -16,12 +16,13 @@ export class LoginService {
   });
 
   // sources
-  error$ = new Subject<string>();
+  private error$ = new Subject<string>();
   login$ = new Subject<AuthenticationDTO>();
-  userAuthenticated$ = this.login$.pipe(
+
+  private userAuthenticated$ = this.login$.pipe(
     switchMap((authDTO) =>
       this.authService.login(authDTO).pipe(
-        catchError((err : HttpErrorResponse) => {
+        catchError((err: HttpErrorResponse) => {
           this.error$.next(err.error);
           return EMPTY;
         })

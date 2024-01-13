@@ -1,6 +1,7 @@
-package pl.gameboard.gameboarddev.dto.user;
+package pl.gameboard.gameboarddev.rest.auth.dto.user;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 

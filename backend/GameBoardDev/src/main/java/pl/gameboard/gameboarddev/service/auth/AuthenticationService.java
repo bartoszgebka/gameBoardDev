@@ -6,25 +6,33 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.gameboard.gameboarddev.config.jwt.JwtService;
-import pl.gameboard.gameboarddev.dto.auth.AuthenticationDTO;
-import pl.gameboard.gameboarddev.dto.auth.RegisterDTO;
-import pl.gameboard.gameboarddev.dto.user.AuthorityDTO;
-import pl.gameboard.gameboarddev.dto.user.UserDTO;
 import pl.gameboard.gameboarddev.model.user.AuthorityEntity;
 import pl.gameboard.gameboarddev.model.user.UserEntity;
-import pl.gameboard.gameboarddev.repository.UserRepository;
+import pl.gameboard.gameboarddev.model.user.UserRepository;
+import pl.gameboard.gameboarddev.rest.auth.dto.auth.AuthenticationDTO;
+import pl.gameboard.gameboarddev.rest.auth.dto.auth.RegisterDTO;
+import pl.gameboard.gameboarddev.rest.auth.dto.user.AuthorityDTO;
+import pl.gameboard.gameboarddev.rest.auth.dto.user.UserDTO;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
+    private final RegisterValidate registerValidate;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public String register(RegisterDTO registerDTO) {
+    @Transactional
+    public ResponseEntity<UserDTO> register(RegisterDTO registerDTO) {
+        registerValidate.validate(registerDTO);
+
         var user = new UserEntity();
 
         user.setLogin(registerDTO.getLogin());
@@ -33,9 +41,14 @@ public class AuthenticationService {
 
         userRepository.save(user);
 
-        return jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user);
+
+        return ResponseEntity.ok()
+                .header("Token", jwtToken)
+                .body(mapUserToDTO(user));
     }
 
+    @Transactional
     public ResponseEntity<UserDTO> authenticate(AuthenticationDTO authenticationDTO) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authenticationDTO.getEmail(), authenticationDTO.getPassword())
@@ -43,11 +56,11 @@ public class AuthenticationService {
 
         var user = userRepository.findByEmail(authenticationDTO.getEmail()).orElseThrow();
 
-         var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user);
 
-         return ResponseEntity.ok()
-                 .header("Token", jwtToken)
-                 .body(mapUserToDTO(user));
+        return ResponseEntity.ok()
+                .header("Token", jwtToken)
+                .body(mapUserToDTO(user));
     }
 
     private UserDTO mapUserToDTO(UserEntity userEntity) {
@@ -55,7 +68,11 @@ public class AuthenticationService {
                 .id(userEntity.getId())
                 .login(userEntity.getLogin())
                 .email(userEntity.getEmail())
-                .authorities(userEntity.getAuthorities().stream().map(this::mapAuthorityToDTO).toList())
+                .authorities(
+                        Optional.ofNullable(userEntity.getAuthorities())
+                                .map(authorities -> authorities.stream().map(this::mapAuthorityToDTO).toList())
+                                .orElse(new ArrayList<>())
+                )
                 .build();
     }
 

@@ -1,6 +1,10 @@
-export const Consts =  {
+import {environment} from "../../../environments/environment";
+
+export const Consts = {
   SESSION_TOKEN: "JWT-TOKEN",
   SESSION_USER: "USER",
+
   // urls
-  LOGIN_URL: '/auth/authenticate'
+  LOGIN_URL: `${environment.apiUrl}/auth/authenticate`,
+  REGISTER_URL: `${environment.apiUrl}/auth/register`
 }

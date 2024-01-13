@@ -1,4 +1,4 @@
-package pl.gameboard.gameboarddev.dto.auth;
+package pl.gameboard.gameboarddev.rest.auth.dto.auth;
 
 import lombok.Builder;
 import lombok.Getter;

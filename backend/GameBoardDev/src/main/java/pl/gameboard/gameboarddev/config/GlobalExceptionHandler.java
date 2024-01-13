@@ -5,9 +5,18 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import pl.gameboard.gameboarddev.util.validate.FormValidateException;
+import pl.gameboard.gameboarddev.util.validate.ValidationResult;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
+        return ResponseEntity
+                .status(500)
+                .body(String.format("Błąd serwera: %s", e.getMessage()));
+    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
@@ -21,5 +30,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(401)
                 .body("Niepoprawny email lub hasło.");
+    }
+
+    @ExceptionHandler(FormValidateException.class)
+    public ResponseEntity<ValidationResult> handleFormValidateException(FormValidateException e) {
+        return ResponseEntity
+                .status(400)
+                .body(e.getValidateResult());
     }
 }

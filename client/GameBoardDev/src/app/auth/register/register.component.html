@@ -1,1 +1,5 @@
-<p>register works!</p>
+<app-register-form
+  [registerStatus]="registerService.status()"
+  [validationResult]="registerService.validationResult()"
+  (register)="registerService.register$.next($event)"
+/>
