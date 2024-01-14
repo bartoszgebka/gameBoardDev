@@ -7,5 +7,5 @@ export const Consts = {
   // urls
   LOGIN_URL: `${environment.apiUrl}/auth/authenticate`,
   REGISTER_URL: `${environment.apiUrl}/auth/register`,
-  ADD_POST_URL: `${environment.apiUrl}/post/create`
+  ADD_POST_URL: `${environment.apiUrl}/posts`
 }

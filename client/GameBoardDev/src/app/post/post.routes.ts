@@ -2,7 +2,7 @@ import {Routes} from "@angular/router";
 import {roleCanMatchGuard} from "../shared/guards/role.can.match.guard";
 import {isAuthenticatedGuard} from "../shared/guards/auth.guard";
 
-export const POST_ROUTES : Routes = [
+export const POST_ROUTES: Routes = [
   {
     path: 'create',
     loadComponent: () => import("./create/create.post.component"),
@@ -15,6 +15,6 @@ export const POST_ROUTES : Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'list' // TODO
+    redirectTo: 'create'
   }
 ]

@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import pl.gameboard.gameboarddev.model.post.PostEntity;
 import pl.gameboard.gameboarddev.model.post.PostRepository;
-import pl.gameboard.gameboarddev.rest.post.dto.PostDTO;
+import pl.gameboard.gameboarddev.rest.post.dto.CreatePostDTO;
 import pl.gameboard.gameboarddev.util.validate.ErrorMessage;
 import pl.gameboard.gameboarddev.util.validate.FormValidateException;
 import pl.gameboard.gameboarddev.util.validate.ValidationResult;
@@ -18,7 +18,7 @@ public class CreatePostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public void create(PostDTO postDTO) {
+    public void create(CreatePostDTO postDTO) {
         validate(postDTO);
 
         var postEntity = new PostEntity();
@@ -27,7 +27,7 @@ public class CreatePostService {
         postRepository.save(postEntity);
     }
 
-    private void validate(PostDTO postDTO) {
+    private void validate(CreatePostDTO postDTO) {
         var validationResult = new ValidationResult();
 
         if(ObjectUtils.isEmpty(postDTO.getTitle())) {
