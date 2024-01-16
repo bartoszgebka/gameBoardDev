@@ -7,9 +7,9 @@ import org.springframework.util.ObjectUtils;
 import pl.gameboard.gameboarddev.model.post.PostEntity;
 import pl.gameboard.gameboarddev.model.post.PostRepository;
 import pl.gameboard.gameboarddev.rest.post.dto.CreatePostDTO;
-import pl.gameboard.gameboarddev.util.validate.ErrorMessage;
-import pl.gameboard.gameboarddev.util.validate.FormValidateException;
-import pl.gameboard.gameboarddev.util.validate.ValidationResult;
+import pl.gameboard.gameboarddev.utils.validate.ErrorMessage;
+import pl.gameboard.gameboarddev.utils.validate.FormValidateException;
+import pl.gameboard.gameboarddev.utils.validate.ValidationResult;
 
 @Service
 @RequiredArgsConstructor

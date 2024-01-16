@@ -1,7 +1,12 @@
-export interface PostDTO {
+export interface PostDetailDTO {
   id: number;
+  authorLogin: string;
+  createdDate: Date;
+  modifiedAuthorLogin: string;
+  modifiedDate: Date;
   title: string;
   content: string;
+  commentsNumber: number;
 }
 
-export type CreatePostDTO = Omit<PostDTO, 'id'>;
+export type CreatePostDTO = Pick<PostDetailDTO, 'title' | 'content'>

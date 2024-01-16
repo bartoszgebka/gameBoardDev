@@ -6,8 +6,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pl.gameboard.gameboarddev.util.validate.FormValidateException;
-import pl.gameboard.gameboarddev.util.validate.ValidationResult;
+import pl.gameboard.gameboarddev.utils.validate.FormValidateException;
+import pl.gameboard.gameboarddev.utils.validate.ValidationResult;
 
 @ControllerAdvice
 @Slf4j

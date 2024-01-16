@@ -1,1 +1,20 @@
-<p>post.list works!</p>
+<app-post-list-search [titleControl]="titleControl"/>
+{{postListService.pageNumber()}}
+@if (postListService.status() === PostListStatus.LOADING) {
+  <mat-spinner mode="indeterminate" diameter="50"/>
+} @else {
+  <div class="posts-wrapper">
+    @for (post of postListService.posts(); track post.id) {
+      <app-post-card [post]="post"/>
+    } @empty {
+      <p>Nie znaleziono postów</p>
+    }
+  </div>
+}
+
+<mat-paginator [length]="postListService.totalElements()"
+               [pageIndex]="postListService.pageNumber()"
+               [pageSize]="postListService.pageSize()"
+               [pageSizeOptions]="[5, 10, 25, 100]"
+               (page)="postListService.pageChange($event)">
+</mat-paginator>

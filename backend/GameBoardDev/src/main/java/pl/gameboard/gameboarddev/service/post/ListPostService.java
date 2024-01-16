@@ -11,6 +11,7 @@ import pl.gameboard.gameboarddev.model.post.PostRepository;
 import pl.gameboard.gameboarddev.model.user.UserEntity;
 import pl.gameboard.gameboarddev.model.user.UserRepository;
 import pl.gameboard.gameboarddev.rest.post.dto.PostDetailDTO;
+import pl.gameboard.gameboarddev.utils.search.SearchResult;
 
 import java.util.List;
 import java.util.Map;
@@ -27,21 +28,26 @@ public class ListPostService {
 
 
     @Transactional(readOnly = true)
-    public List<PostDetailDTO> getPosts(String title) {
-        var pageable = PageRequest.of(0, 20);
+    public SearchResult<PostDetailDTO> getPosts(String title, Integer pageNumber, Integer pageSize) {
+        var pageable = PageRequest.of(pageNumber, pageSize);
 
         var posts = postRepository.findByTitleLikeIgnoreCase(title, pageable);
         var postCommentCounts = fetchComments(posts.getContent());
         var createdByLogins = extractUserLoginsForPosts(posts.getContent(), AuditEntity::getCreatedBy);
         var lastModifiedLogins = extractUserLoginsForPosts(posts.getContent(), AuditEntity::getLastModifiedBy);
 
-        return posts.stream().map(p -> {
+        var results =  posts.stream().map(p -> {
             var authorLogin = createdByLogins.get(p.getId());
             var lastModifiedLogin = lastModifiedLogins.get(p.getId());
             var commentCount = postCommentCounts.getOrDefault(p.getId(), 0L);
 
             return mapToDTO(p, authorLogin, lastModifiedLogin, commentCount);
         }).toList();
+
+        return SearchResult.<PostDetailDTO>builder()
+                .results(results)
+                .totalElements(posts.getTotalElements())
+                .build();
     }
 
     private Map<Long, Long> fetchComments(List<PostEntity> posts) {

@@ -1,4 +1,4 @@
-package pl.gameboard.gameboarddev.util.validate;
+package pl.gameboard.gameboarddev.utils.validate;
 
 import lombok.Getter;
 

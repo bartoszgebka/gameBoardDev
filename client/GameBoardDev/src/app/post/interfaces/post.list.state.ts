@@ -1,8 +1,11 @@
-import {PostDTO} from "./post";
+import {PostDetailDTO} from "./post";
 
 export interface PostListState {
   status: PostListStatus;
-  posts: PostDTO[];
+  posts: PostDetailDTO[];
+  totalElements: number;
+  pageSize: number;
+  pageNumber: number;
   error: string | null;
 }
 

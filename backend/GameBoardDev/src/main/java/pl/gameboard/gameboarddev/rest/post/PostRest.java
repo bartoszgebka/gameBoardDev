@@ -7,8 +7,7 @@ import pl.gameboard.gameboarddev.rest.post.dto.CreatePostDTO;
 import pl.gameboard.gameboarddev.rest.post.dto.PostDetailDTO;
 import pl.gameboard.gameboarddev.service.post.CreatePostService;
 import pl.gameboard.gameboarddev.service.post.ListPostService;
-
-import java.util.List;
+import pl.gameboard.gameboarddev.utils.search.SearchResult;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,8 +24,10 @@ public class PostRest {
     }
 
     @GetMapping
-    public List<PostDetailDTO> getPosts(@RequestParam("title") String title) {
-        return listPostService.getPosts(title);
+    public SearchResult<PostDetailDTO> getPosts(@RequestParam("title") String title,
+                                                @RequestParam("pageNumber") Integer pageNumber ,
+                                                @RequestParam("pageSize") Integer pageSize) {
+        return listPostService.getPosts(title, pageNumber, pageSize);
     }
 
 }

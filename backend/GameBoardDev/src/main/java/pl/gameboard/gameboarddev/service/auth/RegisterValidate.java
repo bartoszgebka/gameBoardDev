@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import pl.gameboard.gameboarddev.model.user.UserRepository;
 import pl.gameboard.gameboarddev.rest.auth.dto.auth.RegisterDTO;
-import pl.gameboard.gameboarddev.util.validate.ErrorMessage;
-import pl.gameboard.gameboarddev.util.validate.FormValidateException;
-import pl.gameboard.gameboarddev.util.validate.ValidationResult;
+import pl.gameboard.gameboarddev.utils.validate.ErrorMessage;
+import pl.gameboard.gameboarddev.utils.validate.FormValidateException;
+import pl.gameboard.gameboarddev.utils.validate.ValidationResult;
 
 import java.util.Objects;
 
