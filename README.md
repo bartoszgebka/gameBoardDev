@@ -1,0 +1,1 @@
+some fun with angular 17 and springboot 3
