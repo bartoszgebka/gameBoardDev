@@ -12,16 +12,14 @@ import {
   Subject,
   switchMap
 } from "rxjs";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Consts} from "../../../shared/constants/consts";
-import {PostDetailDTO} from "../../interfaces/post";
+import {HttpErrorResponse} from "@angular/common/http";
 import {connect} from "ngxtension/connect";
-import {SearchResult} from "../../../shared/interfaces/search/search.result";
 import {PageEvent} from "@angular/material/paginator";
+import {PostService} from "../../shared/data-access/post.service";
 
 @Injectable()
 export class PostListService {
-  private http = inject(HttpClient);
+  private postService = inject(PostService);
 
   private state = signal<PostListState>({
     status: PostListStatus.PENDING,
@@ -56,7 +54,14 @@ export class PostListService {
 
   private postsLoaded$ = combineLatest([this.inputTitle$, this.pageNumber$, this.pageSize$]).pipe(
     debounceTime(0),
-    switchMap(([title, pageNumber, pageSize]) => this.getPosts(title, pageNumber, pageSize))
+    switchMap(([title, pageNumber, pageSize]) => {
+      return this.postService.getPosts(title, pageNumber, pageSize).pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.error$.next(err.message);
+          return EMPTY;
+        })
+      )
+    })
   );
 
   constructor() {
@@ -82,20 +87,5 @@ export class PostListService {
 
   public pageChange(value: PageEvent) {
     return this.pageChange$.next(value);
-  }
-
-  private getPosts(title: string, pageNumber: number, pageSize: number) {
-    return this.http.get<SearchResult<PostDetailDTO>>(Consts.LIST_POST_URL, {
-      params: {
-        title,
-        pageNumber,
-        pageSize
-      }
-    }).pipe(
-      catchError((err: HttpErrorResponse) => {
-        this.error$.next(err.message);
-        return EMPTY;
-      })
-    )
   }
 }

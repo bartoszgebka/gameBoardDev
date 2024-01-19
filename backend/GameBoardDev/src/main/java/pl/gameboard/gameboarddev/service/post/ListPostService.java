@@ -46,6 +46,7 @@ public class ListPostService {
 
         return SearchResult.<PostDetailDTO>builder()
                 .results(results)
+                .pageNumber(posts.getNumber())
                 .totalElements(posts.getTotalElements())
                 .build();
     }

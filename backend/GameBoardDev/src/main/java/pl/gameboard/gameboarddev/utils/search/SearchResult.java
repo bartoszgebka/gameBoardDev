@@ -9,5 +9,6 @@ import java.util.List;
 @Getter
 public class SearchResult<T> {
     private List<T> results;
+    private Integer pageNumber;
     private Long totalElements;
 }

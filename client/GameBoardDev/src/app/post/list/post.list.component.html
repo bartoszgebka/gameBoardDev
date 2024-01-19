@@ -1,5 +1,5 @@
 <app-post-list-search [titleControl]="titleControl"/>
-{{postListService.pageNumber()}}
+
 @if (postListService.status() === PostListStatus.LOADING) {
   <mat-spinner mode="indeterminate" diameter="50"/>
 } @else {
