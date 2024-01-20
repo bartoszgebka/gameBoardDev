@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, input, Output} from '@angular/core';
 import {ValidationResult} from "../../../shared/interfaces/validate/validate";
 import {CreatePostStatus} from "../../interfaces/create.post.state";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
@@ -35,11 +35,8 @@ export class CreatePostFormComponent {
     placeholder: 'Treść'
   }
 
-  @Input({required: true})
-  status!: CreatePostStatus;
-
-  @Input()
-  validationResult?: ValidationResult | undefined;
+  status = input.required<CreatePostStatus>();
+  validationResult =  input<ValidationResult | undefined>();
 
   @Output()
   createPost = new EventEmitter<CreatePostDTO>();

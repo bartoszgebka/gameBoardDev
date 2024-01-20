@@ -13,7 +13,7 @@
     />
     <mat-icon matPrefix>mail</mat-icon>
   </mat-form-field>
-  <app-form-error fieldNameInput="login" [validationResult]="validationResult"/>
+  <app-form-error fieldNameInput="login" [validationResult]="validationResult()"/>
 
   <mat-form-field appearance="fill">
     <mat-label>email</mat-label>
@@ -25,7 +25,7 @@
     />
     <mat-icon matPrefix>mail</mat-icon>
   </mat-form-field>
-  <app-form-error fieldNameInput="email" [validationResult]="validationResult"/>
+  <app-form-error fieldNameInput="email" [validationResult]="validationResult()"/>
 
   <mat-form-field appearance="fill">
     <mat-label>password</mat-label>
@@ -37,7 +37,7 @@
     />
     <mat-icon matPrefix>lock</mat-icon>
   </mat-form-field>
-  <app-form-error fieldNameInput="password" [validationResult]="validationResult"/>
+  <app-form-error fieldNameInput="password" [validationResult]="validationResult()"/>
 
   <mat-form-field appearance="fill">
     <mat-label>confirm password</mat-label>
@@ -49,9 +49,9 @@
     />
     <mat-icon matPrefix>lock</mat-icon>
   </mat-form-field>
-  <app-form-error fieldNameInput="confirmPassword" [validationResult]="validationResult"/>
+  <app-form-error fieldNameInput="confirmPassword" [validationResult]="validationResult()"/>
 
-  @if (RegisterStatus.CREATING === registerStatus) {
+  @if (RegisterStatus.CREATING === registerStatus()) {
     <mat-spinner diameter="50"></mat-spinner>
   }
 
@@ -59,7 +59,7 @@
     mat-raised-button
     color="accent"
     type="submit"
-    [disabled]="RegisterStatus.CREATING === registerStatus"
+    [disabled]="RegisterStatus.CREATING === registerStatus()"
   >
     Register
   </button>

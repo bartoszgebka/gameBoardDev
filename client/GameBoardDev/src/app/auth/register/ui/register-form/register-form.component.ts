@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, inject, input, Input, Output} from '@angular/core';
 import {RegisterStatus} from "../../interfaces/register.state";
 import {RegisterDTO} from "../../interfaces/register";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
@@ -37,11 +37,9 @@ export class RegisterFormComponent {
 
   protected RegisterStatus = RegisterStatus;
 
-  @Input({required: true})
-  registerStatus!: RegisterStatus;
+  registerStatus = input.required<RegisterStatus>();
 
-  @Input()
-  validationResult?: ValidationResult | undefined;
+  validationResult =  input<ValidationResult | undefined>();
 
   @Output()
   register = new EventEmitter<RegisterDTO>();

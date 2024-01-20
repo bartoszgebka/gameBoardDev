@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 import {PostDetailDTO} from "../../../interfaces/post";
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
@@ -18,6 +18,5 @@ import {DatePipe} from "@angular/common";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostCardComponent {
-  @Input({required: true})
-  post!: PostDetailDTO;
+  post = input.required<PostDetailDTO>();
 }

@@ -12,7 +12,7 @@
       placeholder="Tytuł"
     />
   </mat-form-field>
-  <app-form-error fieldNameInput="title" [validationResult]="validationResult"/>
+  <app-form-error fieldNameInput="title" [validationResult]="validationResult()"/>
 
   <ckeditor [editor]="Editor"
             [config]="editorConfig"
@@ -20,9 +20,9 @@
             style="margin-bottom: 1rem;"
             class="create-post-editor"
             />
-  <app-form-error fieldNameInput="content" [validationResult]="validationResult"/>
+  <app-form-error fieldNameInput="content" [validationResult]="validationResult()"/>
 
-  @if (CreatePostStatus.CREATING === status) {
+  @if (CreatePostStatus.CREATING === status()) {
     <mat-spinner diameter="50"></mat-spinner>
   }
 
@@ -30,7 +30,7 @@
     mat-raised-button
     color="accent"
     type="submit"
-    [disabled]="CreatePostStatus.CREATING === status"
+    [disabled]="CreatePostStatus.CREATING === status()"
   >
     Utwórz
   </button>

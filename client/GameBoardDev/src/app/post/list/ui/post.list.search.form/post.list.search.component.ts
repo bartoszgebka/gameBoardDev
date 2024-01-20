@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatInputModule} from "@angular/material/input";
@@ -17,7 +17,7 @@ import {MatIconModule} from "@angular/material/icon";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostListSearchComponent {
-  @Input({required: true})
-  titleControl!: FormControl<string>;
+
+  titleControl = input.required<FormControl<string>>();
 
 }

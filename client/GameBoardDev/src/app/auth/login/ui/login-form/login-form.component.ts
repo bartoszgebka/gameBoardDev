@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, inject, input, Input, Output} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthenticationDTO} from "../../interfaces/authentication";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -8,6 +8,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {LoginStatus} from "../../interfaces/login.state";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatDividerModule} from "@angular/material/divider";
+import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-login-form',
@@ -19,7 +20,8 @@ import {MatDividerModule} from "@angular/material/divider";
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatDividerModule
+    MatDividerModule,
+    JsonPipe
   ],
   templateUrl: './login-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -32,11 +34,9 @@ export class LoginFormComponent {
   });
   protected LoginStatus = LoginStatus;
 
-  @Input({required: true})
-  loginStatus!: LoginStatus;
+  loginStatus = input.required<LoginStatus>();
 
-  @Input()
-  error?: string | null;
+  error = input<string | null>();
 
   @Output()
   authentication = new EventEmitter<AuthenticationDTO>();

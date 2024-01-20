@@ -25,10 +25,10 @@
     <mat-icon matPrefix>lock</mat-icon>
   </mat-form-field>
 
-  @if (LoginStatus.ERROR === loginStatus) {
-    <mat-error>{{ error }}</mat-error>
+  @if (LoginStatus.ERROR === loginStatus()) {
+    <mat-error>{{ error() }}</mat-error>
   }
-  @if (LoginStatus.AUTHENTICATING === loginStatus) {
+  @if (LoginStatus.AUTHENTICATING === loginStatus()) {
     <mat-spinner diameter="50"></mat-spinner>
   }
 
@@ -36,7 +36,7 @@
     mat-raised-button
     color="accent"
     type="submit"
-    [disabled]="LoginStatus.AUTHENTICATING === loginStatus"
+    [disabled]="LoginStatus.AUTHENTICATING === loginStatus()"
   >
     Login
   </button>
