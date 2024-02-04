@@ -1,44 +1,34 @@
-import {computed, inject, Injectable, signal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {RegisterState, RegisterStatus} from "../interfaces/register.state";
-import {catchError, EMPTY, map, merge, Subject, switchMap} from "rxjs";
-import {ValidationResult} from "../../../shared/interfaces/validate/validate";
+import {catchError, map, Observable, of, startWith, switchMap} from "rxjs";
 import {RegisterDTO} from "../interfaces/register";
 import {AuthService} from "../../../shared/data-access/auth.service";
-import {connect} from "ngxtension/connect";
 import {HttpErrorResponse} from "@angular/common/http";
+import {signalSlice} from "ngxtension/signal-slice";
 
 @Injectable()
 export class RegisterService {
   private authService = inject(AuthService);
 
-  private state = signal<RegisterState>({
+  private initialState: RegisterState = {
     status: RegisterStatus.PENDING,
     validationResult: undefined
+  };
+
+  state = signalSlice({
+    initialState: this.initialState,
+    actionSources: {
+      register: (_state, $action: Observable<RegisterDTO>) => {
+        return $action.pipe(
+          switchMap((registerDTO) =>
+            this.authService.createAccount(registerDTO).pipe(
+              map(() => ({status: RegisterStatus.SUCCESS})),
+              startWith({status: RegisterStatus.CREATING}),
+              catchError((err: HttpErrorResponse) => of({status: RegisterStatus.ERROR, validationResult: err.error}))
+            )
+          )
+        )
+      }
+    },
   });
-
-  status = computed(() => this.state().status);
-  validationResult = computed(() => this.state().validationResult);
-
-  private error$ = new Subject<ValidationResult>();
-  register$ = new Subject<RegisterDTO>();
-  private userRegistered$ = this.register$.pipe(
-    switchMap((registerDTO) => {
-      return this.authService.createAccount(registerDTO).pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.error$.next(err.error);
-          return EMPTY;
-        })
-      )
-    })
-  );
-
-  constructor() {
-    const nextStep$ = merge(
-      this.error$.pipe(map((validationResult) => ({status: RegisterStatus.ERROR, validationResult}))),
-      this.register$.pipe(map(() => ({status: RegisterStatus.CREATING, validationResult: undefined}))),
-      this.userRegistered$.pipe(map(() => ({status: RegisterStatus.SUCCESS, validationResult: undefined})))
-    );
-
-    connect(this.state).with(nextStep$);
-  }
 }

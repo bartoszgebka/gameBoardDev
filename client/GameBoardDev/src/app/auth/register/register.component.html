@@ -1,5 +1,5 @@
 <app-register-form
-  [registerStatus]="registerService.status()"
-  [validationResult]="registerService.validationResult()"
-  (register)="registerService.register$.next($event)"
+  [registerStatus]="registerService.state.status()"
+  [validationResult]="registerService.state.validationResult()"
+  (register)="registerService.state.register($event)"
 />

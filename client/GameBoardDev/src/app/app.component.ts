@@ -26,7 +26,7 @@ export class AppComponent {
 
   constructor() {
     effect(() => {
-      const isLogged = this.authService.isLogged();
+      const isLogged = this.authService.state.isLogged();
       if(!isLogged) {
         this.router.navigate(["auth"]);
       }

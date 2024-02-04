@@ -1,49 +1,50 @@
-import {computed, inject, Injectable, signal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {CreatePostState, CreatePostStatus} from "../../interfaces/create.post.state";
-import {catchError, EMPTY, map, merge, Subject, switchMap} from "rxjs";
-import {ValidationResult} from "../../../shared/interfaces/validate/validate";
+import {catchError, map, Observable, of, startWith, switchMap} from "rxjs";
 import {CreatePostDTO} from "../../interfaces/post";
-import {connect} from "ngxtension/connect";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Consts} from "../../../shared/constants/consts";
+import {signalSlice} from "ngxtension/signal-slice";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Injectable()
 export class CreatePostService {
   private http = inject(HttpClient);
+  private route = inject(Router);
+  private matSnackBar = inject(MatSnackBar);
 
-  private state = signal<CreatePostState>({
+  private initialState: CreatePostState = {
     status: CreatePostStatus.PENDING,
     validationResult: undefined
-  });
-
-  // selectors
-  status = computed(() => this.state().status);
-  validationResult = computed(() => this.state().validationResult);
-
-  // sources
-  private error$ = new Subject<ValidationResult>();
-  createPost$ = new Subject<CreatePostDTO>();
-  private createdPost$ = this.createPost$.pipe(
-    switchMap((createPostDTO) => this.create(createPostDTO))
-  );
-
-  constructor() {
-    // reducers
-    const nextState$ = merge(
-      this.createPost$.pipe(map(() => ({status: CreatePostStatus.CREATING}))),
-      this.createdPost$.pipe(map(() => ({status: CreatePostStatus.SUCCESS}))),
-      this.error$.pipe(map((validationResult) => ({status: CreatePostStatus.ERROR, validationResult})))
-    );
-
-    connect(this.state, nextState$);
   }
+
+  state = signalSlice({
+    initialState: this.initialState,
+    actionSources: {
+      createPost: (_state, $action: Observable<CreatePostDTO>) => {
+        return $action.pipe(
+          switchMap((createPostDTO) => this.create(createPostDTO))
+        )
+      }
+    },
+    effects: (state) => ({
+      savePost: () => {
+        if (state.status() === CreatePostStatus.SUCCESS) {
+          this.matSnackBar.open("Pomyślnie dodano nowy post", "Zamknij");
+          this.route.navigate(['home']);
+        }
+      }
+    })
+  });
 
   private create(createPostDTO: CreatePostDTO) {
     return this.http.post<void>(Consts.ADD_POST_URL, createPostDTO, {observe: 'response'}).pipe(
+      map(() => ({status: CreatePostStatus.SUCCESS})),
+      startWith({status: CreatePostStatus.CREATING}),
       catchError((err: HttpErrorResponse) => {
-        this.error$.next(err.error);
-        return EMPTY;
+        return of({status: CreatePostStatus.ERROR, validationResult: err.error});
       })
     );
   }

@@ -3,8 +3,8 @@
     GameBoardDev
   </a>
   <span style="flex: 1 1 auto;"></span>
-  @if (authService.isLogged()) {
-    <span>Witaj, {{ authService.user()?.login }}</span>
+  @if (authService.state.isLogged()) {
+    <span>Witaj, {{ authService.state.user()?.login }}</span>
     <a mat-button color="accent" (click)="authService.logout()">
       Wyloguj się
     </a>

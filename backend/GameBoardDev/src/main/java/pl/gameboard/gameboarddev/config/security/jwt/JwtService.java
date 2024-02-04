@@ -11,10 +11,9 @@ import pl.gameboard.gameboarddev.model.user.AuthorityEntity;
 import pl.gameboard.gameboarddev.model.user.UserEntity;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -39,7 +38,12 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(user.getEmail())
                 .claim("userId", user.getId())
-                .claim("authorities", user.getAuthorities().stream().map(AuthorityEntity::getName).toList())
+                .claim("authorities", Optional.ofNullable(user.getAuthorities())
+                        .stream()
+                        .flatMap(Collection::stream)
+                        .map(AuthorityEntity::getName)
+                        .collect(Collectors.toList())
+                )
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

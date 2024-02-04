@@ -21,7 +21,7 @@ export default class LoginComponent {
 
   constructor() {
     effect(() => {
-      const isLogged = this.authService.isLogged();
+      const isLogged = this.authService.state.isLogged();
       if (isLogged) {
         this.router.navigate(["home"]);
       }

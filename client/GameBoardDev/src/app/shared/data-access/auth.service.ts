@@ -1,11 +1,11 @@
-import {computed, inject, Injectable, signal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {AuthenticationDTO} from "../../auth/login/interfaces/authentication";
 import {HttpClient} from "@angular/common/http";
 import {Consts} from "../constants/consts";
 import {UserDTO} from "../interfaces/user/user";
 import {filter, map, merge, of, Subject, tap} from "rxjs";
-import {connect} from "ngxtension/connect";
 import {RegisterDTO} from "../../auth/register/interfaces/register";
+import {signalSlice} from "ngxtension/signal-slice";
 
 
 interface AuthState {
@@ -18,28 +18,27 @@ interface AuthState {
 export class AuthService {
   private http = inject(HttpClient);
 
-  // state
-  private state = signal<AuthState>({
+  private initialState: AuthState = {
     user: undefined
-  });
-
+  }
   // sources
   private user$ = new Subject<UserDTO>();
   private userFromStorage$ = this.loadUserFromStorage();
   private logout$ = new Subject<void>();
+  private sources$ = merge(
+    this.userFromStorage$.pipe(map(user => ({user}))),
+    this.user$.pipe(map(user => ({user}))),
+    this.logout$.pipe(map(() => ({user: undefined})))
+  );
 
-  // selectors
-  user = computed(() => this.state().user);
-  isLogged = computed(() => !!this.state().user)
+  state = signalSlice({
+    initialState: this.initialState,
+    selectors: (state) => ({
+      isLogged: () => !!state().user
+    }),
+    sources: [this.sources$]
+  });
 
-  constructor() {
-    const nextStep$ = merge(
-      this.userFromStorage$.pipe(map(user => ({user}))),
-      this.user$.pipe(map(user => ({user}))),
-      this.logout$.pipe(map(() => ({user: undefined})))
-    );
-    connect(this.state).with(nextStep$);
-  }
 
   private loadUserFromStorage() {
     return of(sessionStorage.getItem(Consts.SESSION_USER)).pipe(

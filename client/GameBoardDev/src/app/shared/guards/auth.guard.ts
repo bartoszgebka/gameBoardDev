@@ -9,7 +9,7 @@ export const isAuthenticatedGuard: CanActivateFn = () => {
   const router = inject(Router);
   const snackBar = inject(MatSnackBar);
 
-  if (authService.isLogged()) {
+  if (authService.state.isLogged()) {
     const jwt = jwtDecode(authService.getJWTToken()!);
     const currentUnixTimestamp = Math.floor(Date.now() / 1000);
 

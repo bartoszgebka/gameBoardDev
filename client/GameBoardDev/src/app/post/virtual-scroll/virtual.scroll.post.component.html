@@ -1,5 +1,5 @@
-<div infiniteScroll (scrolled)="virtualScrollPostService.scrolled$.next(virtualScrollPostService.pageNumber())">
-  @for (post of virtualScrollPostService.posts(); track post.id) {
+<div infiniteScroll (scrolled)="virtualScrollPostService.state.scrolled(virtualScrollPostService.state.nextPageNumber())">
+  @for (post of virtualScrollPostService.state.posts(); track post.id) {
     <app-post-card [post]="post"/>
   } @empty {
     <p>Nie znaleziono postów</p>
